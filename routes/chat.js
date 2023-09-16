@@ -8,4 +8,8 @@ const chatController = require("../controllers/chat");
 
 router.get("/messages", chatController.getMessages);
 
+// POST => /chat/message
+
+router.post("/message", chatController.postMessage);
+
 module.exports = router;
