@@ -1,32 +1,31 @@
 const express = require("express");
 
+const Message = require("../models/message");
+
 exports.getMessages = (req, res, next) => {
-  res.status(200).json({
-    messages: [
-      {
-        _id: "1",
-        user: "Hamim",
-        message: "hello,do you like this book?",
-        // imageUrl: "images/book.jpg",
-        createdAt: new Date(),
-      },
-    ],
+  Message.find().then((msgs) => {
+    res.status(200).json({
+      messages: msgs,
+    });
   });
 };
 
 exports.postMessage = (req, res, next) => {
- 
   const message = req.body.message;
 
-  res.status(201).json({
-    alert: "message send",
-    message: [
-      {
-        _id: new Date().toISOString(),
-        user: "Hamim",
-        message: message,
-        createdAt: new Date(),
-      },
-    ],
+  const msg = new Message({
+    user: "Hamim",
+    message: message,
   });
+
+  msg
+    .save()
+    .then((result) => {
+      console.log(result);
+      res.status(201).json({
+        alert: "message send",
+        message: result,
+      });
+    })
+    .catch((err) => console.log(err));
 };
