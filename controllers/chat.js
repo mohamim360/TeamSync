@@ -4,24 +4,28 @@ exports.getMessages = (req, res, next) => {
   res.status(200).json({
     messages: [
       {
+        _id: "1",
         user: "Hamim",
-        message: "hello, how are you?",
+        message: "hello,do you like this book?",
+        // imageUrl: "images/book.jpg",
+        createdAt: new Date(),
       },
     ],
   });
 };
 
 exports.postMessage = (req, res, next) => {
-  const user = req.body.user;
+ 
   const message = req.body.message;
 
   res.status(201).json({
     alert: "message send",
     message: [
       {
-        id: new Date().toISOString(),
-        user: user,
+        _id: new Date().toISOString(),
+        user: "Hamim",
         message: message,
+        createdAt: new Date(),
       },
     ],
   });
