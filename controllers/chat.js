@@ -1,6 +1,6 @@
-const express = require("express");
-
 const Message = require("../models/message");
+
+const User = require("../models/user");
 
 exports.getMessages = (req, res, next) => {
   Message.find().then((msgs) => {
@@ -12,19 +12,28 @@ exports.getMessages = (req, res, next) => {
 
 exports.postMessage = (req, res, next) => {
   const message = req.body.message;
-
+  let creator;
   const msg = new Message({
-    user: "Hamim",
+    user: req.userId,
     message: message,
   });
 
   msg
     .save()
     .then((result) => {
-      console.log(result);
+      return User.findById(req.userId);
+    })
+    .then((user) => {
+      creator = user;
+      user.messages.push(msg);
+      return user.save();
+    })
+    .then((result) => {
+      //console.log(result);
       res.status(201).json({
         alert: "message send",
-        message: result,
+        message: msg,
+        creator: { _id: creator._id, name: creator.name },
       });
     })
     .catch((err) => console.log(err));
