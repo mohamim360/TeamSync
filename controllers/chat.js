@@ -3,7 +3,9 @@ const Message = require("../models/message");
 const User = require("../models/user");
 
 exports.getMessages = (req, res, next) => {
-  Message.find().then((msgs) => {
+  Message.find()
+  .populate('user')
+  .then((msgs) => {
     res.status(200).json({
       messages: msgs,
     });
