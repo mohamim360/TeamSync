@@ -49,3 +49,12 @@ exports.postMessage = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.getUsers = (req, res, next) => {
+  User.find()
+    .then((users) => {
+      res.status(200).json({
+        users: users,
+      });
+    });
+};

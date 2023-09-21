@@ -21,6 +21,8 @@ app.use(cors());
 app.use("/chat", chatRoutes);
 app.use("/auth", authRoutes);
 
+
+
 mongoose.connect(process.env.DB_URL).then((result) => {
   const server = app.listen(3000);
 	const io = require('./socket').init(server);
