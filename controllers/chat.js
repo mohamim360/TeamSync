@@ -1,15 +1,15 @@
 const Message = require("../models/message");
-
+const io = require("../socket");
 const User = require("../models/user");
 
 exports.getMessages = (req, res, next) => {
   Message.find()
-  .populate('user')
-  .then((msgs) => {
-    res.status(200).json({
-      messages: msgs,
+    .populate("user")
+    .then((msgs) => {
+      res.status(200).json({
+        messages: msgs,
+      });
     });
-  });
 };
 
 exports.postMessage = (req, res, next) => {
@@ -31,7 +31,16 @@ exports.postMessage = (req, res, next) => {
       return user.save();
     })
     .then((result) => {
-      //console.log(result);
+      io.getIO().emit("messages", {
+        action: "create",
+        message: {
+          message: msg.message,
+          _id: msg._id,
+          createdAt: msg.createdAt,
+          user: { name: creator.name, _id: creator._id },
+        },
+      });
+
       res.status(201).json({
         alert: "message send",
         message: msg,
