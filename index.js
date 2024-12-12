@@ -15,7 +15,13 @@ const app = express();
 
 app.use(bodyParser.json()); //application/json
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://team-sync-client-kappa.vercel.app", // Replace with your client URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true, // If you're using cookies or authentication tokens
+};
+
+app.use(cors(corsOptions));
 
 app.use("/chat", chatRoutes);
 app.use("/auth", authRoutes);

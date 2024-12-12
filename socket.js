@@ -4,7 +4,7 @@ module.exports = {
   init: (httpServer) => {
     io = require("socket.io")(httpServer, {
 			cors: {
-				origin: "*", 
+				origin: "https://team-sync-client-kappa.vercel.app", 
 				methods: ["GET", "POST"],
 			},
 		});
